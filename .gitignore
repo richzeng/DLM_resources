@@ -1,0 +1,15 @@
+*~
+.dll
+.exe
+.lib
+.ilk
+.ncb
+.pdb
+.exp
+.suo
+.swp
+*.user
+
+[Db]ebug
+[Bb]in
+{Rr]elease

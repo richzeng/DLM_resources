@@ -1,0 +1,4 @@
+LIBRARY			DLM_SKELETON
+DESCRIPTION		'Skeleton for DLM'
+
+EXPORTS			IDL_Load		@1
