@@ -1,0 +1,4 @@
+LIBRARY			EXAMPLEDLM
+DESCRIPTION		'Simple sample functions for writing DLMs'
+
+EXPORTS			IDL_Load		@1
