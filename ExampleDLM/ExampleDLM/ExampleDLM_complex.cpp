@@ -14,7 +14,7 @@ by Bob Gunion in 2008.
 #include "ExampleDLM.h"
 
 
-void IDL_CDECL in_place_array(int argc, IDL_VPTR argv[], char *argk)
+void IDL_CDECL inplace_array(int argc, IDL_VPTR argv[], char *argk)
 {
   /*
   ar = intarr(5)
@@ -43,4 +43,70 @@ void IDL_CDECL in_place_array(int argc, IDL_VPTR argv[], char *argk)
     //it to the original argument passed in
     IDL_VarCopy(tmp, argv[0]);
   }
+}
+
+IDL_VPTR IDL_CDECL copy_array(int argc, IDL_VPTR argv[], char *argk)
+{
+  /*
+  Called in IDL as:
+  print, ex_copy_array(indgen(3,3))
+  */
+  IDL_ENSURE_ARRAY(argv[0]);
+  IDL_VPTR returnedArray;
+  short *inputArray = (short *) argv[0]->value.arr->data; //pointer to the array
+  int nDim = argv[0]->value.arr->n_dim; //dimensions
+  int nElts = argv[0]->value.arr->n_elts; //elements
+
+  //outputArray becomes a pointer to the array to be returned
+  short *outputArray = (short *) IDL_MakeTempArray((int) IDL_TYP_INT,
+                                                   nDim,
+                                                   argv[0]->value.arr->dim,
+                                                   IDL_ARR_INI_ZERO,
+                                                   &returnedArray);
+  
+  for(int i=0; i<nElts; i++) {
+    outputArray[i]++;
+  }
+  return returnedArray;
+}
+
+void IDL_CDECL is_even(int argc, IDL_VPTR argv[], char *argk)
+{
+  /*
+  Called in IDL as:
+  ex_is_even, 2, answer=answer
+  ex_is_even, 1, answer=answer
+  print,answer
+  */
+  IDL_ENSURE_SCALAR(argv[0]);
+  int var = IDL_LongScalar(argv[0]);
+  int result;
+
+  if (var%2==0)
+    result=1;
+  else
+    result=0;
+
+
+  /* Structure for IDL keywords. Allows IDL to use the error keyword */
+  typedef struct{
+  	IDL_KW_RESULT_FIRST_FIELD; /* Must be first entry in structure */
+    IDL_VPTR	iAnswer;
+  } KW_RESULT;
+
+  static IDL_KW_PAR kw_pars[] = { IDL_KW_FAST_SCAN,
+	  {"ANSWER",IDL_TYP_UNDEF,1,IDL_KW_OUT|IDL_KW_ZERO,0,(char *)IDL_KW_OFFSETOF(iAnswer)},
+	  {NULL}
+  };
+  //NOTE: THE STRUCTURE AND THE KW_PARS CAN BOTH BE PUT IN THE HEADER FILE
+  //THIS WAS DONE IN THE PVCAM LIBRARY BECAUSE THEY EACH HAD THE ERROR KEYWORD
+
+  /* Handling the answer keyword */
+  KW_RESULT kw;
+  argc = IDL_KWProcessByOffset(argc,argv,argk,kw_pars,(IDL_VPTR *)0,1,&kw);
+  if (kw.iAnswer) {
+    IDL_StoreScalar(kw.iAnswer, IDL_TYP_BYTE, (IDL_ALLTYPES*) &result);
+  }
+  IDL_KW_FREE;
+
 }

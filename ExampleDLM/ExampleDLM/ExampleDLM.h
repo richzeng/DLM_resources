@@ -9,13 +9,11 @@ A skeleton DLM to provide a reference for other developers.
 ******************************************************************************/
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "export.h"
 
 
-#ifndef DLM_SKELETON
-#define DLM_SKELETON
+#ifndef EXAMPLEDLM
+#define EXAMPLEDLM
 
 /* Handy macro to find the size of an array */
 #define ARRLEN(arr) (sizeof(arr)/sizeof(arr[0]))
@@ -38,8 +36,11 @@ extern "C" {
   IDL_VPTR IDL_CDECL hello_func(int argc, IDL_VPTR argv[], char *argk);
   IDL_VPTR IDL_CDECL simple_int(int argc, IDL_VPTR argv[], char *argk);
   IDL_VPTR IDL_CDECL simple_uint(int argc, IDL_VPTR argv[], char *argk);
+  void IDL_CDECL pass_scalar_by_ref(int argc, IDL_VPTR argv[], char *argk);
 
-  void IDL_CDECL in_place_array(int argc, IDL_VPTR argv[], char *argk);
+  void IDL_CDECL inplace_array(int argc, IDL_VPTR argv[], char *argk);
+  IDL_VPTR IDL_CDECL copy_array(int argc, IDL_VPTR argv[], char *argk);
+  void IDL_CDECL is_even(int argc, IDL_VPTR argv[], char *argk);
 }
 
 #endif

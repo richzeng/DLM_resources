@@ -60,3 +60,16 @@ IDL_VPTR IDL_CDECL simple_uint(int argc, IDL_VPTR argv[], char *argk)
   cUInt++;
   return IDL_GettmpULong(cUInt);
 }
+
+void IDL_CDECL pass_scalar_by_ref(int argc, IDL_VPTR argv[], char *argk)
+{
+  /*
+  Called in IDL as:
+  a = 2
+  ex_pass_scalar_by_ref, a
+  */
+  IDL_ENSURE_SCALAR(argv[0]);
+  int var = IDL_LongScalar(argv[0]);
+  var++;
+  IDL_StoreScalar(argv[0], IDL_TYP_LONG, (IDL_ALLTYPES *) &var);
+}
