@@ -58,7 +58,7 @@ IDL_VPTR IDL_CDECL copy_array(int argc, IDL_VPTR argv[], char *argk)
                                                    &returnedArray);
   
   for(int i=0; i<nElts; i++) {
-    outputArray[i]++;
+    outputArray[i] = inputArray[i] + 1;
   }
   return returnedArray;
 }
